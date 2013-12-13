@@ -29,7 +29,6 @@ class JobTemplateDescribeCommand(JobTemplateBaseCommand.JobTemplateBaseCommand):
     def get_parser(self):
         parser = common.get_parser()
         parser.add_option('--id', type="int")
-        parser.add_option('--limit', default=False, action="store_true")
         return parser
 
     def get_missing_option_errors(self, options):
