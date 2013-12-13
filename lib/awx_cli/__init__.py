@@ -20,6 +20,7 @@ from commands.JobTemplateCreateCommand import JobTemplateCreateCommand
 from commands.JobTemplateReplaceCommand import JobTemplateReplaceCommand
 from commands.JobTemplateEditCommand import JobTemplateEditCommand
 from commands.JobTemplateDeleteCommand import JobTemplateDeleteCommand
+from commands.JobTemplateDescribeCommand import JobTemplateDescribeCommand
 
 import sys
 
@@ -37,6 +38,7 @@ class AwxCli:
             JobTemplateReplaceCommand(self),
             JobTemplateEditCommand(self),
             JobTemplateDeleteCommand(self),
+            JobTemplateDescribeCommand(self),
             # awx-cli version
             VersionCommand(self),
         ]
