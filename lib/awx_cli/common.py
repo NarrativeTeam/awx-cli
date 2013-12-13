@@ -48,7 +48,7 @@ def get_parser():
     parser.add_option('-u', '--username', dest='username', default=None, type='str')
     parser.add_option('-p', '--password', dest='password', default=None, type='str')
     parser.add_option('-s', '--server',   dest='server',   default=None, type='str')
-  
+
     return parser
 
 class Connection(object):
@@ -56,24 +56,29 @@ class Connection(object):
     def __init__(self, server):
         self.server = server
 
-    def get(self, endpoint):
-        url = "%s%s" % (self.server, endpoint)
-        data = None
-        try:
-            response = urllib2.urlopen(url)
-            data = response.read()
-        except Exception, e:
-            raise BaseException(str(e) + ", url: %s" % (url))
-        result = json.loads(data)
-        return result
-
     def post(self, endpoint, data):
+        return self._request("post", endpoint, data)
+
+    def put(self, endpoint, data):
+        return self._request("put", endpoint, data)
+
+    def patch(self, endpoint, data):
+        return self._request("patch", endpoint, data)
+
+    def get(self, endpoint):
+        return self._request("get", endpoint)
+
+    def delete(self, endpoint):
+        return self._request("delete", endpoint)
+
+    def _request(self, verb, endpoint, data=None):
         url = "%s%s" % (self.server, endpoint)
-        request = urllib2.Request(
-            url, 
-            json.dumps(data),
-            {'Content-type': 'application/json'}
-        )
+        request = urllib2.Request(url)
+        if data is not None:
+            request.add_data(json.dumps(data))
+            request.add_header('Content-Type', 'application/json')
+        request.get_method = verb.upper
+
         data = None
         try:
             response = urllib2.urlopen(request)
@@ -85,6 +90,7 @@ class Connection(object):
             return result
         except:
             return data
+
 
 def get_config_parser():
     parser = ConfigParser.ConfigParser()
@@ -109,7 +115,7 @@ def get_config_default(p, key, defaults, section='general'):
     return get_config_value(p, section, key, defaults[key])
 
 def connect(options):
-    
+
     config_file = get_config_parser()
 
     if type(options) != dict:

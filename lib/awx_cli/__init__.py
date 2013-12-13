@@ -16,6 +16,10 @@
 # TODO: add a plugin loader sometime
 from commands.VersionCommand import VersionCommand
 from commands.JobLaunchCommand import JobLaunchCommand
+from commands.JobTemplateCreateCommand import JobTemplateCreateCommand
+from commands.JobTemplateReplaceCommand import JobTemplateReplaceCommand
+from commands.JobTemplateEditCommand import JobTemplateEditCommand
+from commands.JobTemplateDeleteCommand import JobTemplateDeleteCommand
 
 import sys
 
@@ -29,6 +33,10 @@ class AwxCli:
 
         self.commands = [
             JobLaunchCommand(self),
+            JobTemplateCreateCommand(self),
+            JobTemplateReplaceCommand(self),
+            JobTemplateEditCommand(self),
+            JobTemplateDeleteCommand(self),
             # awx-cli version
             VersionCommand(self),
         ]
@@ -49,7 +57,7 @@ class AwxCli:
         """ return all of the available commands """
 
         return [ self.commands ]
- 
+
     def activate(self, args):
         """ find what command class to use """
 
